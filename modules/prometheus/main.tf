@@ -1,7 +1,7 @@
 locals {
-  prometheus_hostname   = "prometheus.${var.base_domain}"
-  grafana_hostname      = "grafana.${var.base_domain}"
-  alertmanager_hostname = "alertmanager.${var.base_domain}"
+  prometheus_hostname   = "${var.prometheus_subdomain}.${var.base_domain}"
+  grafana_hostname      = "${var.grafana_subdomain}.${var.base_domain}"
+  alertmanager_hostname = "${var.alertmanager_subdomain}.${var.base_domain}"
 }
 
 resource "kubernetes_namespace" "prometheus" {
@@ -181,6 +181,27 @@ resource "helm_release" "prometheus" {
 
   set {
     name  = "grafana.grafana.ini.security.strict_transport_security"
+    value = "true"
+  }
+
+  # Desabilitar integração com Jaeger que está causando erro
+  set {
+    name  = "grafana.grafana.ini.tracing.enabled"
+    value = "false"
+  }
+
+  set {
+    name  = "grafana.grafana.ini.tracing.jaeger.enabled"
+    value = "false"
+  }
+
+  set {
+    name  = "grafana.env.JAEGER_AGENT_PORT"
+    value = ""
+  }
+
+  set {
+    name  = "grafana.env.JAEGER_DISABLED"
     value = "true"
   }
 

@@ -19,7 +19,7 @@ variable "eks_cluster_ca_cert" {
 }
 
 variable "base_domain" {
-  description = "Nome de domínio base para o qual o External-DNS terá permissões"
+  description = "Domínio base para acesso aos serviços via Ingress"
   type        = string
 }
 
@@ -125,4 +125,216 @@ variable "storage_class_name" {
   description = "Nome da classe de armazenamento a ser usada para volumes persistentes"
   type        = string
   default     = "gp2" # Padrão para AWS EKS
+}
+
+# Variáveis para o Jaeger
+variable "jaeger_enabled" {
+  description = "Se o Jaeger deve ser habilitado"
+  type        = bool
+  default     = true
+}
+
+variable "jaeger_namespace" {
+  description = "Namespace do Kubernetes onde o Jaeger será instalado"
+  type        = string
+  default     = "jaeger"
+}
+
+variable "jaeger_create_namespace" {
+  description = "Se deve criar o namespace para o Jaeger"
+  type        = bool
+  default     = true
+}
+
+variable "jaeger_chart_version" {
+  description = "Versão do chart Helm do Jaeger"
+  type        = string
+  default     = "0.71.7"
+}
+
+variable "jaeger_service_type" {
+  description = "Tipo de serviço Kubernetes para o Jaeger"
+  type        = string
+  default     = "ClusterIP"
+}
+
+variable "jaeger_enable_https" {
+  description = "Se deve habilitar HTTPS para o Jaeger"
+  type        = bool
+  default     = true
+}
+
+variable "jaeger_create_ingress" {
+  description = "Se deve criar um Ingress para o Jaeger"
+  type        = bool
+  default     = true
+}
+
+variable "jaeger_storage_type" {
+  description = "Tipo de armazenamento para o Jaeger (elasticsearch, cassandra ou memory)"
+  type        = string
+  default     = "elasticsearch"
+
+  validation {
+    condition     = contains(["elasticsearch", "cassandra", "memory"], var.jaeger_storage_type)
+    error_message = "O valor de jaeger_storage_type deve ser 'elasticsearch', 'cassandra' ou 'memory'."
+  }
+}
+
+variable "jaeger_elasticsearch_host" {
+  description = "Host do Elasticsearch para armazenamento do Jaeger"
+  type        = string
+  default     = ""
+}
+
+variable "jaeger_elasticsearch_port" {
+  description = "Porta do Elasticsearch para armazenamento do Jaeger"
+  type        = string
+  default     = "9200"
+}
+
+variable "jaeger_deploy_elasticsearch" {
+  description = "Se deve implantar o Elasticsearch junto com o Jaeger"
+  type        = bool
+  default     = true
+}
+
+variable "jaeger_elasticsearch_replicas" {
+  description = "Número de réplicas para o Elasticsearch"
+  type        = number
+  default     = 1
+}
+
+variable "jaeger_elasticsearch_storage_size" {
+  description = "Tamanho do volume de armazenamento para o Elasticsearch"
+  type        = string
+  default     = "20Gi"
+}
+
+variable "jaeger_collector_resources_requests_cpu" {
+  description = "Requisição de CPU para o Jaeger Collector"
+  type        = string
+  default     = "100m"
+}
+
+variable "jaeger_collector_resources_requests_memory" {
+  description = "Requisição de memória para o Jaeger Collector"
+  type        = string
+  default     = "512Mi"
+}
+
+variable "jaeger_collector_resources_limits_cpu" {
+  description = "Limite de CPU para o Jaeger Collector"
+  type        = string
+  default     = "500m"
+}
+
+variable "jaeger_collector_resources_limits_memory" {
+  description = "Limite de memória para o Jaeger Collector"
+  type        = string
+  default     = "1Gi"
+}
+
+variable "jaeger_query_resources_requests_cpu" {
+  description = "Requisição de CPU para o Jaeger Query"
+  type        = string
+  default     = "100m"
+}
+
+variable "jaeger_query_resources_requests_memory" {
+  description = "Requisição de memória para o Jaeger Query"
+  type        = string
+  default     = "512Mi"
+}
+
+variable "jaeger_query_resources_limits_cpu" {
+  description = "Limite de CPU para o Jaeger Query"
+  type        = string
+  default     = "500m"
+}
+
+variable "jaeger_query_resources_limits_memory" {
+  description = "Limite de memória para o Jaeger Query"
+  type        = string
+  default     = "1Gi"
+}
+
+variable "jaeger_agent_resources_requests_cpu" {
+  description = "Requisição de CPU para o Jaeger Agent"
+  type        = string
+  default     = "100m"
+}
+
+variable "jaeger_agent_resources_requests_memory" {
+  description = "Requisição de memória para o Jaeger Agent"
+  type        = string
+  default     = "256Mi"
+}
+
+variable "jaeger_agent_resources_limits_cpu" {
+  description = "Limite de CPU para o Jaeger Agent"
+  type        = string
+  default     = "200m"
+}
+
+variable "jaeger_agent_resources_limits_memory" {
+  description = "Limite de memória para o Jaeger Agent"
+  type        = string
+  default     = "512Mi"
+}
+
+variable "jaeger_retention_days" {
+  description = "Número de dias para retenção de dados no Jaeger"
+  type        = number
+  default     = 7
+}
+
+variable "jaeger_ui_base_path" {
+  description = "Caminho base para o UI do Jaeger"
+  type        = string
+  default     = "/"
+}
+
+# Autenticação do Jaeger
+variable "jaeger_enable_authentication" {
+  description = "Ativa a autenticação para o Jaeger Query UI"
+  type        = bool
+  default     = false
+}
+
+variable "jaeger_username" {
+  description = "Nome de usuário para acesso à interface do Jaeger"
+  type        = string
+  default     = "admin"
+}
+
+variable "jaeger_password" {
+  description = "Senha para acesso à interface do Jaeger"
+  type        = string
+  default     = "admin"
+  sensitive   = true
+}
+
+variable "jaeger_subdomain" {
+  description = "Subdomínio para acesso ao Jaeger (será combinado com base_domain)"
+  type        = string
+  default     = "jaeger"
+}
+
+variable "grafana_subdomain" {
+  description = "Subdomínio para acesso ao Grafana (será combinado com base_domain)"
+  type        = string
+  default     = "grafana"
+}
+
+variable "prometheus_subdomain" {
+  description = "Subdomínio para acesso ao Prometheus (será combinado com base_domain)"
+  type        = string
+  default     = "prometheus"
+}
+
+variable "alertmanager_subdomain" {
+  description = "Subdomínio para acesso ao Alertmanager (será combinado com base_domain)"
+  type        = string
+  default     = "alertmanager"
 }

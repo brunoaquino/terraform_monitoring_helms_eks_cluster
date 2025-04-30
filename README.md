@@ -1,6 +1,6 @@
 # Terraform EKS Monitoring Stack
 
-Este projeto implementa uma stack de monitoramento completa para clusters EKS (Amazon Elastic Kubernetes Service) utilizando Terraform. O módulo provisiona Prometheus e Grafana para a coleta e visualização de métricas do cluster Kubernetes e de suas aplicações.
+Este projeto implementa uma stack de monitoramento completa para clusters EKS (Amazon Elastic Kubernetes Service) utilizando Terraform. O módulo provisiona Prometheus, Grafana e Jaeger para a coleta e visualização de métricas e traces do cluster Kubernetes e de suas aplicações.
 
 ## Arquitetura
 
@@ -9,6 +9,8 @@ A solução implanta:
 - **Prometheus**: Para coleta e armazenamento de métricas
 - **Grafana**: Para visualização e dashboards
 - **Node Exporter**: Para coletar métricas de sistema dos nós
+- **Jaeger**: Para rastreamento distribuído (tracing)
+- **Elasticsearch** (opcional): Para armazenamento de traces do Jaeger
 - **Ingress (opcional)**: Para acesso externo com HTTPS
 
 ## Pré-requisitos
@@ -37,9 +39,13 @@ Consulte o arquivo `variables.tf` para uma lista completa das variáveis dispon�
 - `aws_region`: Região AWS onde o cluster EKS está localizado
 - `eks_cluster_name`: Nome do cluster EKS
 - `prometheus_namespace`: Namespace para instalação do Prometheus e Grafana
+- `jaeger_namespace`: Namespace para instalação do Jaeger
+- `jaeger_enabled`: Define se o Jaeger deve ser habilitado
+- `jaeger_storage_type`: Tipo de armazenamento para o Jaeger (elasticsearch, cassandra ou memory)
 - `grafana_admin_password`: Senha do administrador do Grafana
 - `prometheus_storage_size`: Tamanho do armazenamento persistente para o Prometheus
 - `grafana_storage_size`: Tamanho do armazenamento persistente para o Grafana
+- `jaeger_elasticsearch_storage_size`: Tamanho do armazenamento para o Elasticsearch do Jaeger
 
 ## Dashboards do Grafana
 
@@ -83,12 +89,32 @@ URL: https://grafana.com/grafana/dashboards/6663
 4. Selecione "Prometheus" como fonte de dados
 5. Clique em "Import"
 
+## Utilizando o Jaeger
+
+O Jaeger é uma solução para rastreamento distribuído que permite monitorar e solucionar problemas em sistemas complexos. Para enviar traces ao Jaeger, as aplicações precisam ser instrumentadas com bibliotecas compatíveis com OpenTelemetry ou OpenTracing.
+
+### Endpoints do Jaeger
+
+- **Jaeger UI**: Acesse o UI do Jaeger através do endpoint gerado na saída `jaeger_query_url`
+- **Jaeger Collector**: As aplicações podem enviar traces diretamente para o Collector usando o endpoint gerado na saída `jaeger_collector_endpoint`
+- **Jaeger Agent**: As aplicações podem enviar traces para o Agent usando o endpoint gerado na saída `jaeger_agent_endpoint`
+
+### Configuração de Armazenamento
+
+O Jaeger suporta diferentes opções de armazenamento:
+
+- **Elasticsearch** (recomendado para produção): Persistência de longo prazo com bom desempenho
+- **Cassandra**: Alternativa para armazenamento distribuído
+- **Memory**: Apenas para teste, sem persistência
+
 ## Outputs
 
 Após aplicar o Terraform, os seguintes outputs estarão disponíveis:
 
 - URL do Prometheus
 - URL do Grafana
+- URL do Jaeger
+- Endpoints do Jaeger Collector e Agent
 - Credenciais de acesso
 
 ## Suporte

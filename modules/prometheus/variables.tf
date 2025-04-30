@@ -19,7 +19,7 @@ variable "eks_cluster_ca_cert" {
 }
 
 variable "base_domain" {
-  description = "Nome de domínio base para o qual o External-DNS terá permissões"
+  description = "Domínio base para acesso aos serviços via Ingress"
   type        = string
 }
 
@@ -129,4 +129,22 @@ variable "wait_for_storage" {
   description = "Define se o deployment deve aguardar os PersistentVolumeClaims serem criados"
   type        = bool
   default     = true
+}
+
+variable "prometheus_subdomain" {
+  description = "Subdomínio para acesso ao Prometheus (será combinado com base_domain)"
+  type        = string
+  default     = "prometheus"
+}
+
+variable "grafana_subdomain" {
+  description = "Subdomínio para acesso ao Grafana (será combinado com base_domain)"
+  type        = string
+  default     = "grafana"
+}
+
+variable "alertmanager_subdomain" {
+  description = "Subdomínio para acesso ao Alertmanager (será combinado com base_domain)"
+  type        = string
+  default     = "alertmanager"
 }
