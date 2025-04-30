@@ -37,7 +37,7 @@ grafana_admin_password               = "admin" # Altere isso em produção!
 storage_class_name = "gp2"
 
 # Configurações do Jaeger
-jaeger_enabled          = false
+jaeger_enabled          = true
 jaeger_namespace        = "monitoring"
 jaeger_create_namespace = false
 jaeger_chart_version    = "0.71.7"
