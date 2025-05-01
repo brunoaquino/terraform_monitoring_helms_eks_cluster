@@ -79,3 +79,27 @@ jaeger_ui_base_path   = "/" # Caminho base da UI
 jaeger_enable_authentication = true    # Habilita autenticação básica
 jaeger_username              = "admin" # Usuário para acesso
 jaeger_password              = "admin" # Senha para acesso (alterar em produção)
+
+# Configurações do Loki
+loki_enabled          = true
+loki_namespace        = "monitoring" # Mesmo namespace do Prometheus/Grafana
+loki_create_namespace = false        # Não criamos pois usamos o mesmo do Prometheus
+loki_chart_version    = "2.9.10"
+loki_service_type     = "ClusterIP"
+loki_enable_https     = true
+loki_create_ingress   = true
+loki_storage_size     = "10Gi"
+loki_subdomain        = "loki"
+loki_retention        = "168h" # 7 dias
+
+# Recursos para Loki
+loki_resources_requests_cpu    = "100m"
+loki_resources_requests_memory = "512Mi"
+loki_resources_limits_cpu      = "500m"
+loki_resources_limits_memory   = "1Gi"
+
+# Recursos para Promtail
+promtail_resources_requests_cpu    = "50m"
+promtail_resources_requests_memory = "256Mi"
+promtail_resources_limits_cpu      = "250m"
+promtail_resources_limits_memory   = "512Mi"

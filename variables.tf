@@ -338,3 +338,112 @@ variable "alertmanager_subdomain" {
   type        = string
   default     = "alertmanager"
 }
+
+# Variáveis para o Loki
+variable "loki_enabled" {
+  description = "Se o Loki deve ser habilitado"
+  type        = bool
+  default     = true
+}
+
+variable "loki_namespace" {
+  description = "Namespace do Kubernetes onde o Loki será instalado"
+  type        = string
+  default     = "monitoring" # Usamos o mesmo namespace do Prometheus/Grafana para facilitar a integração
+}
+
+variable "loki_create_namespace" {
+  description = "Se deve criar o namespace para o Loki"
+  type        = bool
+  default     = false # Por padrão, não cria pois usamos o mesmo do Prometheus
+}
+
+variable "loki_chart_version" {
+  description = "Versão do chart Helm do Loki"
+  type        = string
+  default     = "2.9.10"
+}
+
+variable "loki_service_type" {
+  description = "Tipo de serviço Kubernetes para o Loki"
+  type        = string
+  default     = "ClusterIP"
+}
+
+variable "loki_enable_https" {
+  description = "Se deve habilitar HTTPS para o Loki"
+  type        = bool
+  default     = true
+}
+
+variable "loki_create_ingress" {
+  description = "Se deve criar um Ingress para o Loki"
+  type        = bool
+  default     = true
+}
+
+variable "loki_storage_size" {
+  description = "Tamanho do volume de armazenamento para o Loki"
+  type        = string
+  default     = "10Gi"
+}
+
+variable "loki_resources_requests_cpu" {
+  description = "Requisição de CPU para o Loki"
+  type        = string
+  default     = "100m"
+}
+
+variable "loki_resources_requests_memory" {
+  description = "Requisição de memória para o Loki"
+  type        = string
+  default     = "512Mi"
+}
+
+variable "loki_resources_limits_cpu" {
+  description = "Limite de CPU para o Loki"
+  type        = string
+  default     = "500m"
+}
+
+variable "loki_resources_limits_memory" {
+  description = "Limite de memória para o Loki"
+  type        = string
+  default     = "1Gi"
+}
+
+variable "promtail_resources_requests_cpu" {
+  description = "Requisição de CPU para o Promtail"
+  type        = string
+  default     = "50m"
+}
+
+variable "promtail_resources_requests_memory" {
+  description = "Requisição de memória para o Promtail"
+  type        = string
+  default     = "256Mi"
+}
+
+variable "promtail_resources_limits_cpu" {
+  description = "Limite de CPU para o Promtail"
+  type        = string
+  default     = "250m"
+}
+
+variable "promtail_resources_limits_memory" {
+  description = "Limite de memória para o Promtail"
+  type        = string
+  default     = "512Mi"
+}
+
+variable "loki_retention" {
+  description = "Período de retenção dos dados no Loki"
+  type        = string
+  default     = "168h" # 7 dias
+}
+
+variable "loki_subdomain" {
+  description = "Subdomínio para acesso ao Loki (será combinado com base_domain)"
+  type        = string
+  default     = "loki"
+}

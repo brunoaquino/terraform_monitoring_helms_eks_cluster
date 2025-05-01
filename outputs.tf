@@ -55,6 +55,27 @@ output "elasticsearch_url" {
   value       = var.jaeger_enabled && var.jaeger_deploy_elasticsearch && var.jaeger_storage_type == "elasticsearch" ? module.jaeger.elasticsearch_url : ""
 }
 
+# Outputs do Loki
+output "loki_namespace" {
+  description = "O namespace do Kubernetes onde o Loki foi instalado"
+  value       = var.loki_enabled ? module.loki.loki_namespace : "loki-disabled"
+}
+
+output "loki_url" {
+  description = "URL para acessar o Loki"
+  value       = var.loki_enabled ? module.loki.loki_url : "loki-disabled"
+}
+
+output "loki_promtail_service" {
+  description = "Nome do serviço Promtail para coleta de logs"
+  value       = var.loki_enabled ? module.loki.promtail_service : "loki-disabled"
+}
+
+output "loki_grafana_datasource" {
+  description = "Nome da fonte de dados do Loki no Grafana"
+  value       = var.loki_enabled ? module.loki.loki_datasource_name : "loki-disabled"
+}
+
 # Informações gerais
 output "summary" {
   description = "Resumo dos componentes instalados e seus endpoints"
