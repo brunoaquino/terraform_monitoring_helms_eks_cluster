@@ -447,3 +447,136 @@ variable "loki_subdomain" {
   type        = string
   default     = "loki"
 }
+
+# Variáveis para Elasticsearch
+variable "elasticsearch_enabled" {
+  description = "Se o Elasticsearch deve ser habilitado"
+  type        = bool
+  default     = true
+}
+
+variable "elasticsearch_namespace" {
+  description = "Namespace do Kubernetes onde o Elasticsearch será instalado"
+  type        = string
+  default     = "elasticsearch"
+}
+
+variable "elasticsearch_create_namespace" {
+  description = "Se deve criar o namespace para o Elasticsearch"
+  type        = bool
+  default     = true
+}
+
+variable "elasticsearch_chart_version" {
+  description = "Versão do chart Helm do Elasticsearch"
+  type        = string
+  default     = "8.5.1"
+}
+
+variable "elasticsearch_service_type" {
+  description = "Tipo de serviço Kubernetes para o Elasticsearch"
+  type        = string
+  default     = "ClusterIP"
+}
+
+variable "elasticsearch_enable_https" {
+  description = "Se deve habilitar HTTPS para o Elasticsearch"
+  type        = bool
+  default     = true
+}
+
+variable "elasticsearch_create_ingress" {
+  description = "Se deve criar um Ingress para o Elasticsearch"
+  type        = bool
+  default     = true
+}
+
+variable "elasticsearch_storage_size" {
+  description = "Tamanho do volume de armazenamento para o Elasticsearch"
+  type        = string
+  default     = "30Gi"
+}
+
+variable "elasticsearch_resources_requests_cpu" {
+  description = "Requisição de CPU para o Elasticsearch"
+  type        = string
+  default     = "100m"
+}
+
+variable "elasticsearch_resources_requests_memory" {
+  description = "Requisição de memória para o Elasticsearch"
+  type        = string
+  default     = "512Mi"
+}
+
+variable "elasticsearch_resources_limits_cpu" {
+  description = "Limite de CPU para o Elasticsearch"
+  type        = string
+  default     = "1000m"
+}
+
+variable "elasticsearch_resources_limits_memory" {
+  description = "Limite de memória para o Elasticsearch"
+  type        = string
+  default     = "1Gi"
+}
+
+variable "kibana_storage_size" {
+  description = "Tamanho do volume de armazenamento para o Kibana"
+  type        = string
+  default     = "2Gi"
+}
+
+variable "kibana_resources_requests_cpu" {
+  description = "Requisição de CPU para o Kibana"
+  type        = string
+  default     = "100m"
+}
+
+variable "kibana_resources_requests_memory" {
+  description = "Requisição de memória para o Kibana"
+  type        = string
+  default     = "256Mi"
+}
+
+variable "kibana_resources_limits_cpu" {
+  description = "Limite de CPU para o Kibana"
+  type        = string
+  default     = "500m"
+}
+
+variable "kibana_resources_limits_memory" {
+  description = "Limite de memória para o Kibana"
+  type        = string
+  default     = "512Mi"
+}
+
+variable "elasticsearch_replicas" {
+  description = "Número de réplicas para o Elasticsearch"
+  type        = number
+  default     = 1
+}
+
+variable "kibana_replicas" {
+  description = "Número de réplicas para o Kibana"
+  type        = number
+  default     = 1
+}
+
+variable "elasticsearch_retention" {
+  description = "Retenção de dados do Elasticsearch (em dias)"
+  type        = string
+  default     = "7d"
+}
+
+variable "elasticsearch_subdomain" {
+  description = "Subdomínio para acesso ao Elasticsearch"
+  type        = string
+  default     = "elasticsearch"
+}
+
+variable "kibana_subdomain" {
+  description = "Subdomínio para acesso ao Kibana"
+  type        = string
+  default     = "kibana"
+}
