@@ -71,6 +71,27 @@ output "elasticsearch_port" {
   value       = var.elasticsearch_enabled ? module.elasticsearch.elasticsearch_port : 0
 }
 
+# Outputs do OpenTelemetry e Jaeger
+output "opentelemetry_namespace" {
+  description = "Namespace onde o OpenTelemetry foi instalado"
+  value       = var.opentelemetry_enabled ? module.opentelemetry.opentelemetry_namespace : "opentelemetry-disabled"
+}
+
+output "otel_collector_endpoint" {
+  description = "Endpoint do OpenTelemetry Collector"
+  value       = var.opentelemetry_enabled ? module.opentelemetry.otel_collector_endpoint : "opentelemetry-disabled"
+}
+
+output "otel_collector_grpc_endpoint" {
+  description = "Endpoint gRPC do OpenTelemetry Collector"
+  value       = var.opentelemetry_enabled ? module.opentelemetry.otel_collector_grpc_endpoint : "opentelemetry-disabled"
+}
+
+output "jaeger_url" {
+  description = "URL de acesso ao Jaeger UI"
+  value       = var.opentelemetry_enabled ? module.opentelemetry.jaeger_url : "jaeger-disabled"
+}
+
 # Informações gerais
 output "summary" {
   description = "Resumo dos componentes instalados e seus endpoints"
@@ -103,5 +124,11 @@ output "summary" {
     - URL: ${var.elasticsearch_enabled ? module.elasticsearch.elasticsearch_url : "elasticsearch-disabled"}
     - Service: ${var.elasticsearch_enabled ? module.elasticsearch.elasticsearch_service_name : "elasticsearch-disabled"}
     - Port: ${var.elasticsearch_enabled ? module.elasticsearch.elasticsearch_port : 0}
+
+    OpenTelemetry e Jaeger:
+    - Namespace: ${var.opentelemetry_enabled ? module.opentelemetry.opentelemetry_namespace : "opentelemetry-disabled"}
+    - Collector HTTP: ${var.opentelemetry_enabled ? module.opentelemetry.otel_collector_endpoint : "opentelemetry-disabled"}
+    - Collector gRPC: ${var.opentelemetry_enabled ? module.opentelemetry.otel_collector_grpc_endpoint : "opentelemetry-disabled"}
+    - Jaeger UI: ${var.opentelemetry_enabled ? module.opentelemetry.jaeger_url : "jaeger-disabled"}
   EOT
 }

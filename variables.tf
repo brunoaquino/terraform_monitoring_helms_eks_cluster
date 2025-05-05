@@ -339,3 +339,100 @@ variable "elasticsearch_cluster_name" {
   type        = string
   default     = "elasticsearch"
 }
+
+# Variáveis para o OpenTelemetry
+variable "opentelemetry_enabled" {
+  description = "Se o OpenTelemetry deve ser habilitado"
+  type        = bool
+  default     = true
+}
+
+variable "opentelemetry_namespace" {
+  description = "Namespace do Kubernetes onde o OpenTelemetry será instalado"
+  type        = string
+  default     = "opentelemetry"
+}
+
+variable "opentelemetry_create_namespace" {
+  description = "Se deve criar o namespace para o OpenTelemetry"
+  type        = bool
+  default     = true
+}
+
+variable "otel_collector_chart_version" {
+  description = "Versão do chart do OpenTelemetry Collector"
+  type        = string
+  default     = "0.70.0"
+}
+
+variable "jaeger_chart_version" {
+  description = "Versão do chart do Jaeger"
+  type        = string
+  default     = "0.71.10"
+}
+
+variable "opentelemetry_service_type" {
+  description = "Tipo de serviço para o OpenTelemetry e Jaeger"
+  type        = string
+  default     = "ClusterIP"
+}
+
+variable "opentelemetry_create_ingress" {
+  description = "Indica se deve criar um Ingress para o Jaeger UI"
+  type        = bool
+  default     = true
+}
+
+variable "jaeger_subdomain" {
+  description = "Subdomínio para acesso ao Jaeger UI (será combinado com base_domain)"
+  type        = string
+  default     = "jaeger"
+}
+
+variable "otel_collector_resources_requests_cpu" {
+  description = "Requisição de CPU para o OpenTelemetry Collector"
+  type        = string
+  default     = "100m"
+}
+
+variable "otel_collector_resources_requests_memory" {
+  description = "Requisição de memória para o OpenTelemetry Collector"
+  type        = string
+  default     = "128Mi"
+}
+
+variable "otel_collector_resources_limits_cpu" {
+  description = "Limite de CPU para o OpenTelemetry Collector"
+  type        = string
+  default     = "200m"
+}
+
+variable "otel_collector_resources_limits_memory" {
+  description = "Limite de memória para o OpenTelemetry Collector"
+  type        = string
+  default     = "256Mi"
+}
+
+variable "jaeger_resources_requests_cpu" {
+  description = "Requisição de CPU para o Jaeger"
+  type        = string
+  default     = "200m"
+}
+
+variable "jaeger_resources_requests_memory" {
+  description = "Requisição de memória para o Jaeger"
+  type        = string
+  default     = "256Mi"
+}
+
+variable "jaeger_resources_limits_cpu" {
+  description = "Limite de CPU para o Jaeger"
+  type        = string
+  default     = "500m"
+}
+
+variable "jaeger_resources_limits_memory" {
+  description = "Limite de memória para o Jaeger"
+  type        = string
+  default     = "512Mi"
+}

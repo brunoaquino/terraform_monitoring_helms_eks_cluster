@@ -129,3 +129,50 @@ module "elasticsearch" {
   storage_class_name         = var.storage_class_name
   wait_for_storage           = true
 }
+
+# Módulo OpenTelemetry com Jaeger
+module "opentelemetry" {
+  source = "./modules/opentelemetry"
+
+  aws_region           = var.aws_region
+  eks_cluster_name     = var.eks_cluster_name
+  eks_cluster_endpoint = var.eks_cluster_endpoint
+  eks_cluster_ca_cert  = var.eks_cluster_ca_cert
+  base_domain          = var.base_domain
+
+  # Configurações específicas do OpenTelemetry
+  namespace                    = var.opentelemetry_enabled ? var.opentelemetry_namespace : "default-disabled-namespace"
+  create_namespace             = var.opentelemetry_enabled ? var.opentelemetry_create_namespace : false
+  otel_collector_chart_version = var.otel_collector_chart_version
+  jaeger_chart_version         = var.jaeger_chart_version
+  service_type                 = var.opentelemetry_service_type
+
+  # Integração com Elasticsearch existente
+  elasticsearch_host = "${module.elasticsearch.elasticsearch_service_name}.${module.elasticsearch.elasticsearch_namespace}.svc.cluster.local"
+  elasticsearch_port = module.elasticsearch.elasticsearch_port
+
+  # Integração com Prometheus/Grafana existente
+  prometheus_namespace = var.prometheus_namespace
+  grafana_host         = "prometheus-grafana.${var.prometheus_namespace}.svc.cluster.local"
+
+  # Configurações de Ingress
+  create_ingress           = var.opentelemetry_enabled ? var.opentelemetry_create_ingress : false
+  enable_https             = true
+  cert_manager_environment = var.cert_manager_letsencrypt_server
+  jaeger_subdomain         = var.jaeger_subdomain
+
+  # Configurações de recursos
+  otel_collector_resources_requests_cpu    = var.otel_collector_resources_requests_cpu
+  otel_collector_resources_requests_memory = var.otel_collector_resources_requests_memory
+  otel_collector_resources_limits_cpu      = var.otel_collector_resources_limits_cpu
+  otel_collector_resources_limits_memory   = var.otel_collector_resources_limits_memory
+  jaeger_resources_requests_cpu            = var.jaeger_resources_requests_cpu
+  jaeger_resources_requests_memory         = var.jaeger_resources_requests_memory
+  jaeger_resources_limits_cpu              = var.jaeger_resources_limits_cpu
+  jaeger_resources_limits_memory           = var.jaeger_resources_limits_memory
+
+  depends_on = [
+    module.prometheus,
+    module.elasticsearch
+  ]
+}

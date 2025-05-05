@@ -1,0 +1,101 @@
+---
+# Jaeger com Elasticsearch como armazenamento
+
+# Configurações globais
+global:
+  namespace: ${namespace}
+
+# Componentes do Jaeger a serem instalados
+provisionDataStore:
+  cassandra: false
+  elasticsearch: false # Não provisionar o Elasticsearch, usaremos o existente
+
+# Configurar para usar o Elasticsearch
+storage:
+  type: elasticsearch
+  elasticsearch:
+    scheme: http
+    host: ${elasticsearch_host}
+    port: ${elasticsearch_port}
+    anonymous: true
+    user: ""
+    usePassword: false
+    password: ""
+    indexPrefix: jaeger
+    useAliases: true
+    sslEnabled: false
+    nodesWanOnly: false
+    # Configurações adicionais para integração com o ES
+    extraEnv:
+      - name: ES_SERVER_URLS
+        value: "http://${elasticsearch_host}:${elasticsearch_port}"
+      - name: ES_TLS_ENABLED
+        value: "false"
+      - name: ES_USERNAME
+        value: ""
+      - name: ES_PASSWORD
+        value: ""
+      - name: ES_INDEX_PREFIX
+        value: "jaeger"
+
+# Desabilitar o All-in-one
+allInOne:
+  enabled: false
+
+# Configuração do Collector do Jaeger
+collector:
+  enabled: true
+  pullPolicy: IfNotPresent
+  tag: "1.45.0" 
+  image: jaegertracing/jaeger-collector
+  service:
+    type: ${service_type}
+  resources:
+    limits:
+      cpu: ${jaeger_resources_limits_cpu}
+      memory: ${jaeger_resources_limits_memory}
+    requests:
+      cpu: ${jaeger_resources_requests_cpu}
+      memory: ${jaeger_resources_requests_memory}
+  autoscaling:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 3
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 80
+
+# Configuração da interface de consulta do Jaeger
+query:
+  enabled: true
+  basePath: /jaeger
+  service:
+    type: ${service_type}
+  resources:
+    limits:
+      cpu: ${jaeger_resources_limits_cpu}
+      memory: ${jaeger_resources_limits_memory}
+    requests:
+      cpu: ${jaeger_resources_requests_cpu}
+      memory: ${jaeger_resources_requests_memory}
+  
+  # Configurações da UI
+  ui:
+    deploymentLabels:
+      app.kubernetes.io/component: query
+    podLabels:
+      app.kubernetes.io/component: query
+  
+  # Configurações para integração com OpenTelemetry
+  options:
+    query:
+      base-path: /jaeger
+      bearer-token-propagation: true
+    log-level: info
+
+# Desabilitar o agente, pois o OpenTelemetry Collector já cumprirá essa função
+agent:
+  enabled: false
+
+# Desabilitar o ingester - não necessário para armazenamento Elasticsearch
+ingester:
+  enabled: false 

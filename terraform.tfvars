@@ -76,3 +76,25 @@ elasticsearch_resources_limits_memory   = "2Gi"
 # Configuração da JVM para o Elasticsearch
 elasticsearch_heap_size = "512m"
 elasticsearch_java_opts = "-Xms512m -Xmx512m"
+
+# Configurações do OpenTelemetry + Jaeger
+opentelemetry_enabled          = true
+opentelemetry_namespace        = "opentelemetry"
+opentelemetry_create_namespace = true
+otel_collector_chart_version   = "0.70.0"
+jaeger_chart_version           = "0.71.10"
+opentelemetry_service_type     = "ClusterIP"
+opentelemetry_create_ingress   = true
+jaeger_subdomain               = "jaeger"
+
+# Recursos do OpenTelemetry Collector
+otel_collector_resources_requests_cpu    = "100m"
+otel_collector_resources_requests_memory = "256Mi"
+otel_collector_resources_limits_cpu      = "200m"
+otel_collector_resources_limits_memory   = "512Mi"
+
+# Recursos do Jaeger
+jaeger_resources_requests_cpu    = "200m"
+jaeger_resources_requests_memory = "256Mi"
+jaeger_resources_limits_cpu      = "500m"
+jaeger_resources_limits_memory   = "512Mi"
