@@ -56,3 +56,23 @@ promtail_resources_limits_memory   = "256Mi"
 
 # Configuração da classe de armazenamento
 storage_class_name = "gp2" # Classe de armazenamento para volumes persistentes
+
+# Configurações do Elasticsearch
+elasticsearch_enabled          = true
+elasticsearch_namespace        = "elasticsearch"
+elasticsearch_create_namespace = true
+elasticsearch_chart_version    = "7.17.3"
+elasticsearch_service_type     = "ClusterIP"
+elasticsearch_cluster_name     = "elasticsearch"
+elasticsearch_replicas         = 1
+elasticsearch_storage_size     = "30Gi"
+
+# Configuração de recursos do Elasticsearch
+elasticsearch_resources_requests_cpu    = "500m"
+elasticsearch_resources_requests_memory = "1Gi"
+elasticsearch_resources_limits_cpu      = "1000m"
+elasticsearch_resources_limits_memory   = "2Gi"
+
+# Configuração da JVM para o Elasticsearch
+elasticsearch_heap_size = "512m"
+elasticsearch_java_opts = "-Xms512m -Xmx512m"

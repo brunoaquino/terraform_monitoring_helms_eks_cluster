@@ -1,0 +1,78 @@
+---
+# Configuração básica
+clusterName: elasticsearch
+nodeGroup: master
+replicas: 1
+esJavaOpts: "-Xms512m -Xmx512m"
+
+# Tipo de serviço
+service:
+  type: ClusterIP
+
+# Configuração de recursos
+resources:
+  requests:
+    cpu: "500m"
+    memory: "1Gi"
+  limits:
+    cpu: "1000m"
+    memory: "2Gi"
+
+# Persistência de dados
+persistence:
+  enabled: true
+  accessMode: "ReadWriteOnce"
+  size: "30Gi"
+  storageClassName: "gp2"
+
+# Configuração de afinidade
+antiAffinity: "soft"
+
+# Configuração de volume claim template
+volumeClaimTemplate:
+  storageClassName: "gp2"
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "30Gi"
+
+# Configuração de segurança
+securityContext:
+  runAsUser: 1000
+  fsGroup: 1000
+
+# Desabilitar a inicialização do sysctl
+sysctlInit: false
+
+# Desativar a segurança do X-Pack
+xpack:
+  security:
+    enabled: false
+    transport:
+      ssl:
+        enabled: false
+    http:
+      ssl:
+        enabled: false
+
+# Configuração de nó
+node:
+  master: true
+  data: true
+  ingest: true
+
+# Variáveis de ambiente como strings
+extraEnvs:
+  - name: "ELASTIC_APM_ACTIVE"
+    value: "true"
+  - name: "ELASTIC_APM_LOG_LEVEL"
+    value: "warning"
+
+# Configuração de readiness probe
+readinessProbe:
+  initialDelaySeconds: 90
+  periodSeconds: 10
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 10 

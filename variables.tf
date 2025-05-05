@@ -254,3 +254,88 @@ variable "alertmanager_subdomain" {
   type        = string
   default     = "alertmanager"
 }
+
+# Variáveis para o Elasticsearch
+variable "elasticsearch_enabled" {
+  description = "Se o Elasticsearch deve ser habilitado"
+  type        = bool
+  default     = true
+}
+
+variable "elasticsearch_namespace" {
+  description = "Namespace do Kubernetes onde o Elasticsearch será instalado"
+  type        = string
+  default     = "elasticsearch"
+}
+
+variable "elasticsearch_create_namespace" {
+  description = "Se deve criar o namespace para o Elasticsearch"
+  type        = bool
+  default     = true
+}
+
+variable "elasticsearch_chart_version" {
+  description = "Versão do chart Helm do Elasticsearch"
+  type        = string
+  default     = "7.17.3"
+}
+
+variable "elasticsearch_service_type" {
+  description = "Tipo de serviço Kubernetes para o Elasticsearch"
+  type        = string
+  default     = "ClusterIP"
+}
+
+variable "elasticsearch_replicas" {
+  description = "Número de réplicas para o Elasticsearch"
+  type        = number
+  default     = 1
+}
+
+variable "elasticsearch_heap_size" {
+  description = "Tamanho do heap do Java para o Elasticsearch"
+  type        = string
+  default     = "512m"
+}
+
+variable "elasticsearch_java_opts" {
+  description = "Opções adicionais do Java para o Elasticsearch"
+  type        = string
+  default     = "-Xms512m -Xmx512m"
+}
+
+variable "elasticsearch_resources_requests_cpu" {
+  description = "Requisição de CPU para o Elasticsearch"
+  type        = string
+  default     = "500m"
+}
+
+variable "elasticsearch_resources_requests_memory" {
+  description = "Requisição de memória para o Elasticsearch"
+  type        = string
+  default     = "1Gi"
+}
+
+variable "elasticsearch_resources_limits_cpu" {
+  description = "Limite de CPU para o Elasticsearch"
+  type        = string
+  default     = "1000m"
+}
+
+variable "elasticsearch_resources_limits_memory" {
+  description = "Limite de memória para o Elasticsearch"
+  type        = string
+  default     = "2Gi"
+}
+
+variable "elasticsearch_storage_size" {
+  description = "Tamanho do volume de armazenamento para o Elasticsearch"
+  type        = string
+  default     = "30Gi"
+}
+
+variable "elasticsearch_cluster_name" {
+  description = "Nome do cluster Elasticsearch"
+  type        = string
+  default     = "elasticsearch"
+}

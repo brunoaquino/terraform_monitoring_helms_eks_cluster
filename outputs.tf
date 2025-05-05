@@ -50,6 +50,27 @@ output "loki_grafana_datasource" {
   value       = var.loki_enabled ? module.loki.loki_datasource_name : "loki-disabled"
 }
 
+# Outputs do Elasticsearch
+output "elasticsearch_namespace" {
+  description = "Namespace onde o Elasticsearch foi instalado"
+  value       = var.elasticsearch_enabled ? module.elasticsearch.elasticsearch_namespace : "elasticsearch-disabled"
+}
+
+output "elasticsearch_url" {
+  description = "URL de acesso ao Elasticsearch"
+  value       = var.elasticsearch_enabled ? module.elasticsearch.elasticsearch_url : "elasticsearch-disabled"
+}
+
+output "elasticsearch_service_name" {
+  description = "Nome do serviço Kubernetes do Elasticsearch"
+  value       = var.elasticsearch_enabled ? module.elasticsearch.elasticsearch_service_name : "elasticsearch-disabled"
+}
+
+output "elasticsearch_port" {
+  description = "Porta do serviço Elasticsearch"
+  value       = var.elasticsearch_enabled ? module.elasticsearch.elasticsearch_port : 0
+}
+
 # Informações gerais
 output "summary" {
   description = "Resumo dos componentes instalados e seus endpoints"
@@ -72,6 +93,15 @@ output "summary" {
 
     Alertmanager:
     - URL: ${module.prometheus.alertmanager_url}
-: ""}
+
+    Loki:
+    - Namespace: ${var.loki_enabled ? module.loki.loki_namespace : "loki-disabled"}
+    - URL: ${var.loki_enabled ? module.loki.loki_url : "loki-disabled"}
+
+    Elasticsearch:
+    - Namespace: ${var.elasticsearch_enabled ? module.elasticsearch.elasticsearch_namespace : "elasticsearch-disabled"}
+    - URL: ${var.elasticsearch_enabled ? module.elasticsearch.elasticsearch_url : "elasticsearch-disabled"}
+    - Service: ${var.elasticsearch_enabled ? module.elasticsearch.elasticsearch_service_name : "elasticsearch-disabled"}
+    - Port: ${var.elasticsearch_enabled ? module.elasticsearch.elasticsearch_port : 0}
   EOT
 }

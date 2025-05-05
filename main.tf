@@ -98,3 +98,34 @@ module "loki" {
   loki_retention                     = var.loki_retention
   wait_for_storage                   = true # Habilitamos a espera por volumes
 }
+
+# Módulo Elasticsearch
+module "elasticsearch" {
+  source = "./modules/elasticsearch"
+
+  aws_region           = var.aws_region
+  eks_cluster_name     = var.eks_cluster_name
+  eks_cluster_endpoint = var.eks_cluster_endpoint
+  eks_cluster_ca_cert  = var.eks_cluster_ca_cert
+
+  # Configurações específicas do Elasticsearch
+  namespace        = var.elasticsearch_enabled ? var.elasticsearch_namespace : "default-disabled-namespace"
+  create_namespace = var.elasticsearch_enabled ? var.elasticsearch_create_namespace : false
+  chart_version    = var.elasticsearch_chart_version
+  service_type     = var.elasticsearch_service_type
+  cluster_name     = var.elasticsearch_cluster_name
+
+  # Configurações de recursos e JVM
+  elasticsearch_replicas                  = var.elasticsearch_replicas
+  elasticsearch_heap_size                 = var.elasticsearch_heap_size
+  elasticsearch_java_opts                 = var.elasticsearch_java_opts
+  elasticsearch_resources_requests_cpu    = var.elasticsearch_resources_requests_cpu
+  elasticsearch_resources_requests_memory = var.elasticsearch_resources_requests_memory
+  elasticsearch_resources_limits_cpu      = var.elasticsearch_resources_limits_cpu
+  elasticsearch_resources_limits_memory   = var.elasticsearch_resources_limits_memory
+
+  # Configurações de armazenamento
+  elasticsearch_storage_size = var.elasticsearch_storage_size
+  storage_class_name         = var.storage_class_name
+  wait_for_storage           = true
+}
