@@ -50,22 +50,6 @@ output "loki_grafana_datasource" {
   value       = var.loki_enabled ? module.loki.loki_datasource_name : "loki-disabled"
 }
 
-# Outputs do Elasticsearch
-output "elasticsearch_namespace" {
-  description = "Namespace onde o Elasticsearch foi instalado"
-  value       = var.elasticsearch_enabled ? module.elasticsearch[0].elasticsearch_namespace : "elasticsearch-disabled"
-}
-
-output "elasticsearch_url" {
-  description = "URL interna para acesso ao Elasticsearch dentro do cluster"
-  value       = var.elasticsearch_enabled ? module.elasticsearch[0].elasticsearch_url : "elasticsearch-disabled"
-}
-
-output "elasticsearch_service_name" {
-  description = "Nome do serviço do Elasticsearch"
-  value       = var.elasticsearch_enabled ? module.elasticsearch[0].elasticsearch_service_name : "elasticsearch-disabled"
-}
-
 # Informações gerais
 output "summary" {
   description = "Resumo dos componentes instalados e seus endpoints"

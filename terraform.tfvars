@@ -6,14 +6,14 @@ eks_cluster_ca_cert  = "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCVENDQWUyZ0F3
 # Domínio base para Ingress
 base_domain = "mixnarede.com.br"
 
-# Subdomínios personalizados para cada serviço
-jaeger_subdomain       = "jaeger"
+# Let's Encrypt - prod ou staging
+cert_manager_letsencrypt_server = "prod"
+
+# Subdomínios para acesso aos serviços
 grafana_subdomain      = "grafana"
 prometheus_subdomain   = "prometheus"
 alertmanager_subdomain = "alertmanager"
-
-# Let's Encrypt - prod ou staging
-cert_manager_letsencrypt_server = "prod"
+loki_subdomain         = "loki"
 
 # Configurações do Prometheus
 prometheus_namespace        = "monitoring"
@@ -33,89 +33,26 @@ prometheus_storage_size              = "10Gi"
 grafana_storage_size                 = "5Gi"
 grafana_admin_password               = "admin" # Altere isso em produção!
 
-# Configuração da classe de armazenamento
-storage_class_name = "gp2"
-
-# Configurações do Jaeger
-jaeger_enabled          = true
-jaeger_namespace        = "monitoring"
-jaeger_create_namespace = false
-jaeger_chart_version    = "0.71.7"
-jaeger_service_type     = "ClusterIP"
-jaeger_enable_https     = true
-jaeger_create_ingress   = true
-
-# Configurações de armazenamento do Jaeger
-jaeger_storage_type               = "elasticsearch" # Opções: elasticsearch, cassandra, memory
-jaeger_deploy_elasticsearch       = true            # Se true, implanta o Elasticsearch junto com o Jaeger
-jaeger_elasticsearch_host         = ""              # Deixe vazio para usar o Elasticsearch implantado
-jaeger_elasticsearch_port         = "9200"
-jaeger_elasticsearch_replicas     = 1      # Número de réplicas do Elasticsearch
-jaeger_elasticsearch_storage_size = "20Gi" # Tamanho do volume do Elasticsearch
-
-# Recursos do Jaeger Collector
-jaeger_collector_resources_requests_cpu    = "100m"
-jaeger_collector_resources_requests_memory = "512Mi"
-jaeger_collector_resources_limits_cpu      = "500m"
-jaeger_collector_resources_limits_memory   = "1Gi"
-
-# Recursos do Jaeger Query
-jaeger_query_resources_requests_cpu    = "100m"
-jaeger_query_resources_requests_memory = "512Mi"
-jaeger_query_resources_limits_cpu      = "500m"
-jaeger_query_resources_limits_memory   = "1Gi"
-
-# Recursos do Jaeger Agent
-jaeger_agent_resources_requests_cpu    = "100m"
-jaeger_agent_resources_requests_memory = "256Mi"
-jaeger_agent_resources_limits_cpu      = "200m"
-jaeger_agent_resources_limits_memory   = "512Mi"
-
-# Configurações adicionais do Jaeger
-jaeger_retention_days = 7   # Retenção de dados em dias
-jaeger_ui_base_path   = "/" # Caminho base da UI
-
-# Autenticação do Jaeger
-jaeger_enable_authentication = true    # Habilita autenticação básica
-jaeger_username              = "admin" # Usuário para acesso
-jaeger_password              = "admin" # Senha para acesso (alterar em produção)
-
 # Configurações do Loki
 loki_enabled          = true
-loki_namespace        = "monitoring" # Mesmo namespace do Prometheus/Grafana
-loki_create_namespace = false        # Não criamos pois usamos o mesmo do Prometheus
-loki_chart_version    = "2.9.10"
+loki_namespace        = "loki"
+loki_create_namespace = true
+loki_chart_version    = "2.9.11"
 loki_service_type     = "ClusterIP"
-loki_enable_https     = false
-loki_create_ingress   = false
+loki_enable_https     = true
+loki_create_ingress   = true
 loki_storage_size     = "10Gi"
-loki_subdomain        = "loki"
 loki_retention        = "168h" # 7 dias
 
-# Recursos para Loki
-loki_resources_requests_cpu    = "100m"
-loki_resources_requests_memory = "512Mi"
-loki_resources_limits_cpu      = "500m"
-loki_resources_limits_memory   = "1Gi"
+# Recursos do Loki
+loki_resources_requests_cpu        = "200m"
+loki_resources_requests_memory     = "256Mi"
+loki_resources_limits_cpu          = "500m"
+loki_resources_limits_memory       = "512Mi"
+promtail_resources_requests_cpu    = "100m"
+promtail_resources_requests_memory = "128Mi"
+promtail_resources_limits_cpu      = "200m"
+promtail_resources_limits_memory   = "256Mi"
 
-# Recursos para Promtail
-promtail_resources_requests_cpu    = "50m"
-promtail_resources_requests_memory = "256Mi"
-promtail_resources_limits_cpu      = "250m"
-promtail_resources_limits_memory   = "512Mi"
-
-# Configurações do Elasticsearch
-elasticsearch_enabled          = true
-elasticsearch_namespace        = "elasticsearch"
-elasticsearch_create_namespace = true
-elasticsearch_chart_version    = "8.5.1"
-elasticsearch_service_type     = "ClusterIP"
-elasticsearch_storage_size     = "30Gi"
-elasticsearch_retention        = "7d"
-elasticsearch_replicas         = 1
-
-# Recursos para Elasticsearch
-elasticsearch_resources_requests_cpu    = "100m"
-elasticsearch_resources_requests_memory = "512Mi"
-elasticsearch_resources_limits_cpu      = "1000m"
-elasticsearch_resources_limits_memory   = "1Gi"
+# Configuração da classe de armazenamento
+storage_class_name = "gp2" # Classe de armazenamento para volumes persistentes
